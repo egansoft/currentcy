@@ -132,8 +132,18 @@ error: function(error) {
 .controller('LoginCtrl', function($scope) {
 })
 
+.controller('notificationsCtrl', function($scope) {
+  $scope.notif=window.notif
+
+})
+
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
+
+.controller('MenuCtrl', function($scope) {
+  $scope.notifnum = window.notifnum
+})
+
 
 .controller('ProfileCtrl', function ($scope, ngFB) {
   if(!window.me)  {
@@ -142,6 +152,11 @@ error: function(error) {
   else {
     $scope.me = window.me;
   }
+})
+
+.controller('EditProfileCtrl', function ($scope, ngFB) {
+  $scope.me = window.me
+
 })
 
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {

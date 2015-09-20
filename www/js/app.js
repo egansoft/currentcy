@@ -231,6 +231,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     })
 
+  .state('app.editprofile', {
+        url: '/editprofile',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/accountinfo.html',
+                controller: 'EditProfileCtrl'
+            }
+        }
+    })
+
       .state('app.settings', {
         url: '/settings',
         views: {
@@ -284,7 +294,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
     views: {
         'menuContent': {
             templateUrl: "templates/notifications.html",
-
+            controller: "notificationsCtrl"
         }
     }
    })
@@ -296,14 +306,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     }
    })
-  .state('app.editprofile', {
-    url: "/editprofile",
-    views: {
-        'menuContent': {
-            templateUrl: "templates/editprofile.html",
-        }
-    }
-   })
+  
   .state('app.notificationpreferences', {
     url: "/notificationpreferences",
     views: {
@@ -320,6 +323,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     }
    })
+
+   .state('app.menu', {
+    url: "/menu",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/menu.html",
+            controller: "MenuCtrl"
+        }
+    }
+   })
+
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/login');
