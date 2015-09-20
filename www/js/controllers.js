@@ -1,13 +1,13 @@
 function extractResults(r) {
-    return  {
-        id: r.id,
-        name: r.get('name'),
-        updatedAt: r.get('updatedAt'),
-        facebook: r.get('facebook'),
-        picture: r.get('picture'),
-        status: r.get('status'),
-        loc: r.get('loc')
-    }
+  return  {
+    id: r.id,
+    name: r.get('name'),
+    updatedAt: r.get('updatedAt'),
+    facebook: r.get('facebook'),
+    picture: r.get('picture'),
+    status: r.get('status'),
+    loc: r.get('loc')
+  }
 }
 var where
 
@@ -63,21 +63,21 @@ angular.module('starter.controllers', ['ngOpenFB'])
     //             alert('Facebook login failed');
     //         }
     //     });
-    openFB.login(
-        function(response) {
-            if (response.status === 'connected') {
-                console.log('Facebook login succeeded');
-                openFB.api({
-                  path: '/me',
-                  params: {fields: 'id,name,picture,email'},
-                  success: function(FBuser) {
-                    console.log(FBuser)
+openFB.login(
+  function(response) {
+    if (response.status === 'connected') {
+      console.log('Facebook login succeeded');
+      openFB.api({
+        path: '/me',
+        params: {fields: 'id,name,picture,email'},
+        success: function(FBuser) {
+          console.log(FBuser)
 
-                    var query = new Parse.Query("Users")
-                    query.equalTo("facebook", FBuser.id)
-                    query.limit = 1
-                    query.find().then(function(results) {
-                        if(results.length == 0) {
+          var query = new Parse.Query("Users")
+          query.equalTo("facebook", FBuser.id)
+          query.limit = 1
+          query.find().then(function(results) {
+            if(results.length == 0) {
                             // user doesn't exist yet
                             var me = new Parse.Object('Users')
                             me.set('name', FBuser.name)
@@ -86,35 +86,35 @@ angular.module('starter.controllers', ['ngOpenFB'])
                             me.set('status', 0)
                             me.set('facebook', FBuser.id)
                             me.set('loc', new Parse.GeoPoint({
-                                latitude: (where ? where.H : myLoc.latitude || 0),
-                                longitude: (where? where.L : myLoc.longitude || 0)
+                              latitude: (where ? where.H : myLoc.latitude || 0),
+                              longitude: (where? where.L : myLoc.longitude || 0)
                             }))
 
                             me.save().then(function(obj) {
-                                window.me = extractResults(obj)
-                                window.meRef = obj
-                                window.localStorage.setItem('meid', obj.id)
-                                console.log(obj)
+                              window.me = extractResults(obj)
+                              window.meRef = obj
+                              window.localStorage.setItem('meid', obj.id)
+                              console.log(obj)
                             })
-                        } else {
+                          } else {
                             // user exists
                             window.me = extractResults(results[0])
                             window.meRef = results[0]
                             console.log(results[0])
                             window.localStorage.setItem('meid', results[0].id)
-                        }
-                    })
+                          }
+                        })
 
-                  },
-                  error: function(error) {
-                      alert('Facebook error: ' + error.error_description);
-                  }
-                });
-            } else {
-                alert('Facebook login failed');
-            }
-        }
-    )
+},
+error: function(error) {
+  alert('Facebook error: ' + error.error_description);
+}
+});
+} else {
+  alert('Facebook login failed');
+}
+}
+)
 }
 })
 
@@ -208,7 +208,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }, function(error){
       console.log("Could not get location");
     });
-}, 8000);
+  }, 8000);
 
 
   function place_marker(chargeLat, chargeLng) {
@@ -224,19 +224,21 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 .controller('deliverymapCtrl', function($scope, $ionicLoading, $compile) {
-      function initialize() {
-        var site = new google.maps.LatLng(55.9879314,-4.3042387);
-        var hospital = new google.maps.LatLng(55.8934378,-4.2201905);
-      
-        var mapOptions = {
-          streetViewControl:true,
-          center: site,
-          zoom: 18,
-          mapTypeId: google.maps.MapTypeId.TERRAIN
-        };
-        var map = new google.maps.Map(document.getElementById("map"),
-            mapOptions);
-        
+
+  var site = new google.maps.LatLng(55.8934378,-4.2301905);
+  var hospital = new google.maps.LatLng(55.8934378,-4.2201905);
+  
+  function initialize() {
+
+    var mapOptions = {
+      streetViewControl:true,
+      center: site,
+      zoom: 18,
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    };
+    var map = new google.maps.Map(document.getElementById("map"),
+      mapOptions);
+
         //Marker + infowindow + angularjs compiled ng-click
         var contentString = "<div><a ng-click='clickTest()'>Click me!</a></div>";
         var compiled = $compile(contentString)($scope);
@@ -258,17 +260,17 @@ angular.module('starter.controllers', ['ngOpenFB'])
         });
         
         var infowindow = new google.maps.InfoWindow({
-             content:"My Location"
-        });
+         content:"My Location"
+       });
 
         infowindow.open(map,marker);
         
         var hospitalwindow = new google.maps.InfoWindow({
-             content:"Charger Location"
-        });
+         content:"Charger Location"
+       });
 
         hospitalwindow.open(map,hospitalRoute);
-       
+
         google.maps.event.addListener(marker, 'click', function() {
           infowindow.open(map,marker);
         });
@@ -279,22 +281,22 @@ angular.module('starter.controllers', ['ngOpenFB'])
         var directionsDisplay = new google.maps.DirectionsRenderer();
 
         var request = {
-            origin : site,
-            destination : hospital,
-            travelMode : google.maps.TravelMode.DRIVING
+          origin : site,
+          destination : hospital,
+          travelMode : google.maps.TravelMode.DRIVING
         };
         directionsService.route(request, function(response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(response);
-            }
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+          }
         });
 
         directionsDisplay.setMap(map); 
-       
+
       }
-  
+
       google.maps.event.addDomListener(window, 'load', initialize());
-    
+
       $scope.centerOnMe = function() {
         if(!$scope.map) {
           return;
