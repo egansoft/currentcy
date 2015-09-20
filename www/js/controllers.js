@@ -152,7 +152,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   var options = {timeout: 10000, enableHighAccuracy: true};
 
   place_marker(42.358741, -71.095807);
-
+  var marker;
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     where = latLng
@@ -171,7 +171,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     //Wait until the map is loaded
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
-      var marker = new google.maps.Marker({
+      marker = new google.maps.Marker({
         map: $scope.map,
         position: defaultLatLng,
         center: defaultLatLng,
@@ -192,30 +192,23 @@ angular.module('starter.controllers', ['ngOpenFB'])
   });
 
   setInterval(function () {
-      clearMarkers();
 
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
       var livelatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-      var livemarker = new google.maps.Marker({
-        map: $scope.map,
-        position: livelatLng,
-        center: livelatLng,
-        zoom: 1
-      });
+      marker.setPosition(livelatLng);
 
       var liveinfoWindow = new google.maps.InfoWindow({
         content: "You are located here"
       });
 
-      google.maps.event.addListener(livemarker, 'click', function () {
-        liveinfoWindow.open($scope.map, livemarker);
+      google.maps.event.addListener(marker, 'click', function () {
+        liveinfoWindow.open($scope.map, marker);
       });
       console.log(livelatLng);
     }, function(error){
       console.log("Could not get location");
     });
-}, 5000);
+}, 8000);
 
 
   function place_marker(chargeLat, chargeLng) {
