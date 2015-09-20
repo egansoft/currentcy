@@ -320,6 +320,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     }
    })
+  .state('app.help', {
+    url: "/help",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/help.html",
+        }
+    }
+   })
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/map');
