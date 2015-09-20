@@ -1,6 +1,19 @@
+function extractResults(r) {
+    return  {
+        id: r.id,
+        name: r.get('name'),
+        updatedAt: r.get('updatedAt'),
+        facebook: r.get('facebook'),
+        picture: r.get('picture'),
+        status: r.get('status'),
+        loc: r.get('loc')
+    }
+}
+var where
+
 angular.module('starter.controllers', ['ngOpenFB'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, ngFB) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, ngFB, $state, $rootScope) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -59,12 +72,44 @@ angular.module('starter.controllers', ['ngOpenFB'])
                   params: {fields: 'id,name,picture,email'},
                   success: function(FBuser) {
                     console.log(FBuser)
+
+                    var query = new Parse.Query("Users")
+                    query.equalTo("facebook", FBuser.id)
+                    query.limit = 1
+                    query.find().then(function(results) {
+                        if(results.length == 0) {
+                            // user doesn't exist yet
+                            var me = new Parse.Object('Users')
+                            me.set('name', FBuser.name)
+                            me.set('email', FBuser.email)
+                            me.set('picture', FBuser.picture.data.url)
+                            me.set('status', 0)
+                            me.set('facebook', FBuser.id)
+                            me.set('loc', new Parse.GeoPoint({
+                                latitude: (where ? where.H : myLoc.latitude || 0),
+                                longitude: (where? where.L : myLoc.longitude || 0)
+                            }))
+
+                            me.save().then(function(obj) {
+                                window.me = extractResults(obj)
+                                window.meRef = obj
+                                window.localStorage.setItem('meid', obj.id)
+                                console.log(obj)
+                            })
+                        } else {
+                            // user exists
+                            window.me = extractResults(results[0])
+                            window.meRef = results[0]
+                            console.log(results[0])
+                            window.localStorage.setItem('meid', results[0].id)
+                        }
+                    })
+
                   },
                   error: function(error) {
                       alert('Facebook error: ' + error.error_description);
                   }
                 });
-                $state.go("app.home",{},{reload:true});
             } else {
                 alert('Facebook login failed');
             }
@@ -109,6 +154,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    where = latLng
 
     var mapOptions = {
       center: latLng,

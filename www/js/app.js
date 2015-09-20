@@ -11,8 +11,10 @@ Parse.initialize("pelE80NCz6F6CzySUtgXspDGXVEm6rA4MDThhLCM", "0OoJKprEh2IIxF81Rl
 // the cool shit goes here
 var getFrom
 var myLoc
+var looking = false
 var getCharger = function() {
     navigator.geolocation.getCurrentPosition(function(position) {
+        looking = true
         var geoPoint = new Parse.GeoPoint({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
@@ -25,7 +27,7 @@ var getCharger = function() {
 
         var query = new Parse.Query("Users")
         query.equalTo("status", 2)
-        query.near("loc", geoPoint)
+        query.withinMiles("loc", geoPoint, 5)
         query.limit(1)
 
         query.find().then(function(results) {
@@ -42,6 +44,7 @@ var getCharger = function() {
                     getFrom = extractResults(results[0])
                     setChargerStatus()
                 })
+                return
             }
 
             getFrom = extractResults(results[0])
@@ -76,8 +79,31 @@ function extractResults(r) {
 
 var chargerAvail = function() {
     navigator.geolocation.getCurrentPosition(function(position) {
+        if(!window.meRef)
+            return
 
+        meRef.set('loc', new Parse.GeoPoint({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        }))
+        meRef.set('status', 2)
+        meRef.save()
     })
+}
+
+var dist = function(lon1, lon2, lat1, lat2) {
+    var R, dlon, dlat, a, c, d
+    lon1 *= Math.PI/180
+    lon2 *= Math.PI/180
+    lat1 *= Math.PI/180
+    lat2 *= Math.PI/180
+    R = 3959
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = Math.pow(Math.sin(dlat/2),2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon/2),2)
+    c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) )
+    d = R * c
+    return d
 }
 
 angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordova'])
@@ -94,6 +120,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         if (window.StatusBar) {
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
+        }
+
+        if (window.localStorage.getItem('meid')) {
+            console.log('has')
+            var q = new Parse.Query("Users")
+            q.get(window.localStorage.getItem('meid'), {
+                success: function(obj){
+                    window.meRef = obj
+                    window.me = extractResults(obj)
+                    console.log('storage', window.me)
+                },
+
+                error: function(a,b) {
+                    console.log('error',a,b)
+                }
+            })
         }
 
         // do these things only when we're on a device
@@ -114,7 +156,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
                     console.log("Level is low, we should do a request thing now")
                     getCharger()
                 }
-                if(info.level > 80 && !info.isPlugged || info.level > 95 && info.isPlugged) {
+                if((info.level > 80 && !info.isPlugged || info.level > 95 && info.isPlugged)
+                        && window.meRef && window.meRef.get('state') == 1) {
                     console.log("Level is high, we should say we're available")
                     chargerAvail()
                 }
