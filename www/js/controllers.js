@@ -136,8 +136,12 @@ error: function(error) {
 })
 
 .controller('ProfileCtrl', function ($scope, ngFB) {
-  $scope.me = window.me
-
+  if(!window.me)  {
+    window.location('#/app/login');
+  }
+  else {
+    $scope.me = window.me;
+  }
 })
 
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
