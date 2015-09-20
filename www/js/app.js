@@ -13,6 +13,7 @@ getFrom = undefined
 fromRef = undefined
 var myLoc
 var looking = false
+var hasCharger = false
 
 var getCharger = function() {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -83,7 +84,8 @@ function extractResults(r) {
         facebook: r.get('facebook'),
         picture: r.get('picture'),
         status: r.get('status'),
-        loc: r.get('loc')
+        loc: r.get('loc'),
+        phone: r.get('phone')
     }
 }
 
@@ -119,6 +121,8 @@ var foundCharger = function() {
         ticker: "Now charging",
         text:  "Enjoy your charge"
     })
+
+    hasCharger = true
 }
 
 var dist = function(lon1, lon2, lat1, lat2) {
@@ -186,8 +190,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
                     console.log("Level is low, we should do a request thing now")
                     getCharger()
                 }
-                if((info.level > 80 && !info.isPlugged || info.level > 95 && info.isPlugged)
-                        && window.meRef && window.meRef.get('state') == 1) {
+                if((info.level > 80 && !info.isPlugged)
+                        && hasCharger) {
                     console.log("Level is high, we should say we're available")
                     chargerAvail()
                 }
@@ -344,5 +348,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
 
   ;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/login');
+  $urlRouterProvider.otherwise('/app/map');
 });

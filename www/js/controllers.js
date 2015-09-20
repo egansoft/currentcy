@@ -6,7 +6,8 @@ function extractResults(r) {
     facebook: r.get('facebook'),
     picture: r.get('picture'),
     status: r.get('status'),
-    loc: r.get('loc')
+    loc: r.get('loc'),
+    phone: r.get('phone')
   }
 }
 var where
@@ -146,11 +147,8 @@ error: function(error) {
 
 
 .controller('ProfileCtrl', function ($scope, ngFB) {
-  if(!window.me)  {
-    window.location('#/app/login');
-  }
-  else {
-    $scope.me = window.me;
+  if(!window.localStorage.getItem('meid'))  {
+    window.location = '#/app/login';
   }
 })
 
@@ -160,6 +158,12 @@ error: function(error) {
 })
 
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation, $window) {
+    if(!window.localStorage.getItem('meid'))  {
+      window.location = '#/app/login';
+    }
+
+    $scope.lowBatt = getCharger
+
     $scope.from = window.getFrom
     console.log('loading ctrl')
     window.doShit = function() {
@@ -168,6 +172,25 @@ error: function(error) {
         if (!$scope.$$phase) { // check if digest already in progress
             $scope.$digest(); // launch digest;
         }
+        if(getFrom && place_marker) {
+            var mark = place_marker(getFrom.loc._latitude, getFrom.loc._longitude, true)
+
+            var directionsService = new google.maps.DirectionsService();
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+
+            var request = {
+              origin : myMarker.center,
+              destination : mark.center,
+              travelMode : google.maps.TravelMode.WALKING
+            };
+            directionsService.route(request, function(response, status) {
+              if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+              }
+            });
+
+            directionsDisplay.setMap(homeMap);
+        }
         // $window.location.reload();
         // var $ = function(i) {
         //     return document.getElementById(i)
@@ -175,6 +198,8 @@ error: function(error) {
         // $('fromImg').setAttribute('src', window.from.picture)
         // $('fromName').setAttribute('src', window.from.name)
         // $('fromPhone').setAttribute('src', window.from.phone)
+
+
     }
 
     // document.addEventListener("resume", doShit, false);
@@ -195,12 +220,13 @@ error: function(error) {
     };
 
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    window.homeMap = $scope.map
 
 
     //Wait until the map is loaded
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
-      var image = '../img/15-person-icon.png';
+      var image = 'img/15-person-icon.png';
       marker = new google.maps.Marker({
         map: $scope.map,
         position: defaultLatLng,
@@ -208,6 +234,7 @@ error: function(error) {
         zoom: 1,
         icon: image
       });
+      window.myMarker = marker
 
       var infoWindow = new google.maps.InfoWindow({
         content: "You are located here"
@@ -218,7 +245,7 @@ error: function(error) {
       });
 
     });
-    function place_marker(chargeLat, chargeLng) {
+    window.place_marker = function(chargeLat, chargeLng, colored) {
       var positionVal = {lat: chargeLat, lng: chargeLng};
 
       personMarker = new google.maps.Marker({
@@ -227,6 +254,10 @@ error: function(error) {
           center: positionVal,
           zoom: 1
         });
+        if(colored)
+            personMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+
+        return personMarker
     }
   place_marker(42.356241, -71.098707);
   place_marker(42.357241, -71.094707);
