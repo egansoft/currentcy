@@ -50,27 +50,27 @@ angular.module('starter.controllers', ['ngOpenFB'])
     //             alert('Facebook login failed');
     //         }
     //     });
-    openFB.login(
-        function(response) {
-            if (response.status === 'connected') {
-                console.log('Facebook login succeeded');
-                openFB.api({
-                  path: '/me',
-                  params: {fields: 'id,name,picture,email'},
-                  success: function(FBuser) {
-                    console.log(FBuser)
-                  },
-                  error: function(error) {
-                      alert('Facebook error: ' + error.error_description);
-                  }
-                });
-                $state.go("app.home",{},{reload:true});
-            } else {
-                alert('Facebook login failed');
-            }
+openFB.login(
+  function(response) {
+    if (response.status === 'connected') {
+      console.log('Facebook login succeeded');
+      openFB.api({
+        path: '/me',
+        params: {fields: 'id,name,picture,email'},
+        success: function(FBuser) {
+          console.log(FBuser)
         },
-        {scope: 'email,publish_actions,user_friends'})
+        error: function(error) {
+          alert('Facebook error: ' + error.error_description);
+        }
+      });
+      $state.go("app.home",{},{reload:true});
+    } else {
+      alert('Facebook login failed');
     }
+  },
+  {scope: 'email,publish_actions,user_friends'})
+}
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -109,19 +109,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
   place_marker(39.256116, -76.710749);
 
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-    setInterval(function(){
+    var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
+    var mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
 
-
-      var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-      var mapOptions = {
-        center: latLng,
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-
-      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
 
     //Wait until the map is loaded
@@ -129,7 +125,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
       var marker = new google.maps.Marker({
         map: $scope.map,
-        animation: google.maps.Animation.DROP,
         position: latLng,
         center: latLng,
         zoom: 1
@@ -144,12 +139,35 @@ angular.module('starter.controllers', ['ngOpenFB'])
       });
 
     });
-
-  },4000);
-
   }, function(error){
     console.log("Could not get location");
   });
+
+  setInterval(function () {
+
+    $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+      var livelatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+      var livemarker = new google.maps.Marker({
+        map: $scope.map,
+        position: livelatLng,
+        center: livelatLng,
+        zoom: 1
+      });      
+
+      var liveinfoWindow = new google.maps.InfoWindow({
+        content: "You are located here"
+      });
+
+      google.maps.event.addListener(livemarker, 'click', function () {
+        liveinfoWindow.open($scope.map, livemarker);
+      });
+      console.log(livelatLng);
+    }, function(error){
+      console.log("Could not get location");
+    });
+  }, 3000);
+
 
   function place_marker(chargeLat, chargeLng) {
     var positionVal = {lat: chargeLat, lng: chargeLng};
