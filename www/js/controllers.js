@@ -136,19 +136,30 @@ error: function(error) {
 })
 
 .controller('ProfileCtrl', function ($scope, ngFB) {
-  ngFB.api({
-    path: '/me',
-    params: {fields: 'id,name'}
-  }).then(
-  function (user) {
-    $scope.user = user;
-  },
-  function (error) {
-    alert('Facebook error: ' + error.error_description);
-  });
+  $scope.me = window.me
+
 })
 
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
+.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, $window) {
+    $scope.from = window.getFrom
+    console.log('loading ctrl')
+    window.doShit = function() {
+        console.log('resume')
+        $scope.from = window.getFrom
+        if (!$scope.$$phase) { // check if digest already in progress
+            $scope.$digest(); // launch digest;
+        }
+        // $window.location.reload();
+        // var $ = function(i) {
+        //     return document.getElementById(i)
+        // }
+        // $('fromImg').setAttribute('src', window.from.picture)
+        // $('fromName').setAttribute('src', window.from.name)
+        // $('fromPhone').setAttribute('src', window.from.phone)
+    }
+
+    // document.addEventListener("resume", doShit, false);
+
   var options = {timeout: 10000, enableHighAccuracy: true};
 
   // place_marker(42.358741, -71.095807);

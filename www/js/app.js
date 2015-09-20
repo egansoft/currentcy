@@ -9,8 +9,8 @@
 Parse.initialize("pelE80NCz6F6CzySUtgXspDGXVEm6rA4MDThhLCM", "0OoJKprEh2IIxF81RlbwLZzHQjQqdMTLvOP0xVXT");
 
 // the cool shit goes here
-var getFrom
-var fromRef
+getFrom = undefined
+fromRef = undefined
 var myLoc
 var looking = false
 
@@ -70,6 +70,9 @@ var setChargerStatus = function() {
 
     fromRef.set('status', 3)
     fromRef.save()
+
+    if(window.doShit)
+        window.doShit()
 }
 
 function extractResults(r) {
@@ -199,8 +202,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
+    $ionicConfigProvider.views.maxCache(0);
   openFB.init({appId: '699992913443805'});
 
     $stateProvider
@@ -306,6 +310,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
     views: {
         'menuContent': {
             templateUrl: "templates/notificationpreferences.html",
+        }
+    }
+   })
+  .state('app.help', {
+    url: "/help",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/help.html",
         }
     }
    })

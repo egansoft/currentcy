@@ -2,25 +2,14 @@
 <ion-content>
 <div id="map" data-tab-disabled="true"></div>
 
-<center> <div class="col"> <font size=3> Request Charger </font> </div> </center>
+<center> <div class="col"> <font size=3> Charger Request </font> </div> </center>
 <div class="list">
-  <div class="row">
-    <div class="col">
-      <div class="item item-button-right">
-        <font size=3>Phone</font>
-        <button class="button button-positive">
-          <i class="ion-alert-circled"></i>
-        </button>
-      </div>
-    </div>
-    <div class="col">
-      <div class="item item-button-right">
-       <font size=3> Comp. </font>
-       <button class="button button-positive">
-        <i class="ion-alert-circled"></i>
-      </button>
-    </div>
-  </div>
+
+    <a class="item item-avatar" href="#">
+      <img src="{{from.picture}}">
+      <h2>{{from.name}}</h2>
+      <p>{{from.phone}}</p>
+    </a>
 </div>
 </ion-content>
 </ion-view>
