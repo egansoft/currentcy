@@ -135,6 +135,11 @@ error: function(error) {
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
+.controller('MenuCtrl', function($scope) {
+  $scope.notif = window.notif
+})
+
+
 .controller('ProfileCtrl', function ($scope, ngFB) {
   if(!window.me)  {
     window.location('#/app/login');

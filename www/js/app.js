@@ -323,6 +323,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     }
    })
+
+   .state('app.menu', {
+    url: "/menu",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/menu.html",
+            controller: "MenuCtrl"
+        }
+    }
+   })
+
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/login');
