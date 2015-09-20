@@ -151,9 +151,9 @@ error: function(error) {
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
 
-  place_marker(42.358741, -71.095807);
+  // place_marker(42.358741, -71.095807);
   var marker;
-  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+  navigator.geolocation.getCurrentPosition(function(position){
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     where = latLng
 
@@ -189,45 +189,46 @@ error: function(error) {
     });
   }, function(error){
     console.log("Could not get location");
-  });
+})})
 
-  setInterval(function () {
-
-    $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-      var livelatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      marker.setPosition(livelatLng);
-
-      var liveinfoWindow = new google.maps.InfoWindow({
-        content: "You are located here"
-      });
-
-      google.maps.event.addListener(marker, 'click', function () {
-        liveinfoWindow.open($scope.map, marker);
-      });
-      console.log(livelatLng);
-    }, function(error){
-      console.log("Could not get location");
-    });
-  }, 8000);
-
-
-  function place_marker(chargeLat, chargeLng) {
-    var positionVal = {lat: chargeLat, lng: chargeLng};
-
-    var marker = new google.maps.Marker({
-      map: $scope.map,
-      animation: google.maps.Animation.DROP,
-      position: positionVal,
-    });
-  }
-
-})
+//   setInterval(function () {
+//
+//     // $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+//     navigator.geolocation.getCurrentPosition(function(position){
+//       var livelatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+//       marker.setPosition(livelatLng);
+//
+//       var liveinfoWindow = new google.maps.InfoWindow({
+//         content: "You are located here"
+//       });
+//
+//       google.maps.event.addListener(marker, 'click', function () {
+//         liveinfoWindow.open($scope.map, marker);
+//       });
+//       console.log(livelatLng);
+//     }, function(error){
+//       console.log("Could not get location");
+//     });
+//   }, 8000);
+//
+//
+//   function place_marker(chargeLat, chargeLng) {
+//     var positionVal = {lat: chargeLat, lng: chargeLng};
+//
+//     var marker = new google.maps.Marker({
+//       map: $scope.map,
+//       animation: google.maps.Animation.DROP,
+//       position: positionVal,
+//     });
+//   }
+//
+// })
 
 .controller('deliverymapCtrl', function($scope, $ionicLoading, $compile) {
 
   var site = new google.maps.LatLng(55.8934378,-4.2301905);
   var hospital = new google.maps.LatLng(55.8934378,-4.2201905);
-  
+
   function initialize() {
 
     var mapOptions = {
@@ -252,19 +253,19 @@ error: function(error) {
           map: map,
           title: 'Strathblane (Job Location)'
         });
-        
+
         var hospitalRoute = new google.maps.Marker({
           position: hospital,
           map: map,
           title: 'Hospital (Stobhill)'
         });
-        
+
         var infowindow = new google.maps.InfoWindow({
          content:"My Location"
        });
 
         infowindow.open(map,marker);
-        
+
         var hospitalwindow = new google.maps.InfoWindow({
          content:"Charger Location"
        });
@@ -276,7 +277,7 @@ error: function(error) {
         });
 
         $scope.map = map;
-        
+
         var directionsService = new google.maps.DirectionsService();
         var directionsDisplay = new google.maps.DirectionsRenderer();
 
@@ -291,7 +292,7 @@ error: function(error) {
           }
         });
 
-        directionsDisplay.setMap(map); 
+        directionsDisplay.setMap(map);
 
       }
 
@@ -313,9 +314,9 @@ error: function(error) {
           alert('Unable to get location: ' + error.message);
         });
       };
-      
+
       $scope.clickTest = function() {
         alert('Example of infowindow with ng-click')
       };
-      
+
     });

@@ -116,7 +116,8 @@ var openFB = (function () {
         var loginWindow,
             startTime,
             scope = '',
-            redirectURL = runningInCordova ? cordovaOAuthRedirectURL : oauthRedirectURL;
+            // redirectURL = runningInCordova ? cordovaOAuthRedirectURL : oauthRedirectURL;
+            redirectURL = cordovaOAuthRedirectURL;
 
         if (!fbAppId) {
             return callback({status: 'unknown', error: 'Facebook App Id not set.'});
@@ -159,10 +160,10 @@ var openFB = (function () {
             '&response_type=token&scope=' + scope, '_blank', 'location=no,clearcache=yes');
 
         // If the app is running in Cordova, listen to URL changes in the InAppBrowser until we get a URL with an access_token or an error
-        if (runningInCordova) {
+        // if (runningInCordova) {
             loginWindow.addEventListener('loadstart', loginWindow_loadStartHandler);
             loginWindow.addEventListener('exit', loginWindow_exitHandler);
-        }
+        // }
         // Note: if the app is running in the browser the loginWindow dialog will call back by invoking the
         // oauthCallback() function. See oauthcallback.html for details.
 

@@ -221,6 +221,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
             }
         }
     })
+    .state('app.deliverymap', {
+        url: '/deliverymap',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/deliverymap.html',
+                controller: 'MapCtrl'
+            }
+        }
+    })
     .state('app.login', {
         url: '/login',
         views: {
@@ -249,18 +258,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
             }
         }
     })
-
-
-   .state('app.deliverymap', {
-        url: '/deliverymap',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/deliverymap.html',
-                controller: 'deliverymapCtrl'
-            }
-        }
-    })
-
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {
@@ -296,11 +293,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     }
    })
-  .state('app.editprofile', {
-    url: "/editprofile",
+  .state('app.accountinfo', {
+    url: "/accountinfo",
     views: {
         'menuContent': {
-            templateUrl: "templates/editprofile.html",
+            templateUrl: "templates/accountinfo.html",
         }
     }
    })
@@ -309,22 +306,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
     views: {
         'menuContent': {
             templateUrl: "templates/notificationpreferences.html",
-        }
-    }
-   })
-  .state('app.postlogin', {
-    url: "/postlogin",
-    views: {
-        'menuContent': {
-            templateUrl: "templates/postlogin.html",
-        }
-    }
-   })
-  .state('app.help', {
-    url: "/help",
-    views: {
-        'menuContent': {
-            templateUrl: "templates/help.html",
         }
     }
    })
