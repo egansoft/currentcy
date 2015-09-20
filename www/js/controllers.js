@@ -105,18 +105,23 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
+  
+  place_marker(39.256116, -76.710749);
 
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+    setInterval(function(){
 
-    var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-    var mapOptions = {
-      center: latLng,
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
 
-    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+      var mapOptions = {
+        center: latLng,
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
 
     //Wait until the map is loaded
@@ -128,7 +133,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
         position: latLng,
         center: latLng,
         zoom: 1
-      });
+      });      
 
       var infoWindow = new google.maps.InfoWindow({
         content: "You are located here"
@@ -140,7 +145,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
     });
 
-    place_marker(39.256116, -76.710749);
+  },4000);
 
   }, function(error){
     console.log("Could not get location");
@@ -150,9 +155,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
     var positionVal = {lat: chargeLat, lng: chargeLng};
 
     var marker = new google.maps.Marker({
-        map: $scope.map,
-        animation: google.maps.Animation.DROP,
-        position: positionVal,
-      });
+      map: $scope.map,
+      animation: google.maps.Animation.DROP,
+      position: positionVal,
+    });      
   }
+
 });
+
+
