@@ -10,8 +10,10 @@ Parse.initialize("pelE80NCz6F6CzySUtgXspDGXVEm6rA4MDThhLCM", "0OoJKprEh2IIxF81Rl
 
 // the cool shit goes here
 var getFrom
+var fromRef
 var myLoc
 var looking = false
+
 var getCharger = function() {
     navigator.geolocation.getCurrentPosition(function(position) {
         looking = true
@@ -41,12 +43,14 @@ var getCharger = function() {
                 query.limit(1)
 
                 query.find().then(function(results) {
+                    fromRef = results[0]
                     getFrom = extractResults(results[0])
                     setChargerStatus()
                 })
                 return
             }
 
+            fromRef = results[0]
             getFrom = extractResults(results[0])
             setChargerStatus()
 
@@ -63,6 +67,9 @@ var setChargerStatus = function() {
         ticker: getFrom.name + " has a charger ready",
         text:  getFrom.name + " has a charger ready"
     })
+
+    fromRef.set('status', 3)
+    fromRef.save()
 }
 
 function extractResults(r) {
@@ -88,6 +95,26 @@ var chargerAvail = function() {
         }))
         meRef.set('status', 2)
         meRef.save()
+
+        cordova.plugins.backgroundMode.configure({
+            title: "Done with charger",
+            ticker: "Done with charger",
+            text:  "Your charger is ready for pickup"
+        })
+    })
+}
+
+var foundCharger = function() {
+    looking = false
+    fromRef.set('status', 0)
+    fromRef.save()
+    meRef.set('status', 1)
+    meRef.save()
+
+    cordova.plugins.backgroundMode.configure({
+        title: "Now charging",
+        ticker: "Now charging",
+        text:  "Enjoy your charge"
     })
 }
 
@@ -160,6 +187,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
                         && window.meRef && window.meRef.get('state') == 1) {
                     console.log("Level is high, we should say we're available")
                     chargerAvail()
+                }
+                if(info.isPlugged && looking) {
+                    console.log("Looks like they received the charger")
+                    foundCharger()
                 }
             }
         }
@@ -250,7 +281,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
     views: {
         'menuContent': {
             templateUrl: "templates/notifications.html",
-            
+
         }
     }
    })
