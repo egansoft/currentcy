@@ -18,15 +18,12 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close ng-click="login()">
-          Sign Up
-        </ion-item>
         <ion-item menu-close href="#/app/map">
           Map
         </ion-item>
         <ion-item menu-close href="#/app/notifications">
           Notifications
-          <span class="badge badge-assertive">0</span>
+          <span class="badge badge-assertive">{{notif}}</span>
         </ion-item>
         <ion-item menu-close href="#/app/profile">
           Profile

@@ -132,10 +132,29 @@ error: function(error) {
 .controller('LoginCtrl', function($scope) {
 })
 
+.controller('notificationsCtrl', function($scope) {
+  $scope.notif=window.notif
+
+})
+
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
+.controller('MenuCtrl', function($scope) {
+  $scope.notifnum = window.notifnum
+})
+
+
 .controller('ProfileCtrl', function ($scope, ngFB) {
+  if(!window.me)  {
+    window.location('#/app/login');
+  }
+  else {
+    $scope.me = window.me;
+  }
+})
+
+.controller('EditProfileCtrl', function ($scope, ngFB) {
   $scope.me = window.me
 
 })
@@ -162,7 +181,6 @@ error: function(error) {
 
   var options = {timeout: 10000, enableHighAccuracy: true};
 
-  // place_marker(42.358741, -71.095807);
   var marker;
   navigator.geolocation.getCurrentPosition(function(position){
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -182,11 +200,13 @@ error: function(error) {
     //Wait until the map is loaded
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
+      var image = '../img/15-person-icon.png';
       marker = new google.maps.Marker({
         map: $scope.map,
         position: defaultLatLng,
         center: defaultLatLng,
-        zoom: 1
+        zoom: 1,
+        icon: image
       });
 
       var infoWindow = new google.maps.InfoWindow({
@@ -198,6 +218,21 @@ error: function(error) {
       });
 
     });
+    function place_marker(chargeLat, chargeLng) {
+      var positionVal = {lat: chargeLat, lng: chargeLng};
+
+      personMarker = new google.maps.Marker({
+          map: $scope.map,
+          position: positionVal,
+          center: positionVal,
+          zoom: 1
+        });
+    }
+  place_marker(42.356241, -71.098707);
+  place_marker(42.357241, -71.094707);
+  place_marker(42.357341, -71.094907);
+  place_marker(42.360341, -71.104907);
+  place_marker(42.359341, -71.0884907);
   }, function(error){
     console.log("Could not get location");
 })})
