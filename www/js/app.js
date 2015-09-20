@@ -190,7 +190,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
             }
         }
     })
-
+    .state('app.deliverymap', {
+        url: '/deliverymap',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/deliverymap.html',
+                controller: 'MapCtrl'
+            }
+        }
+    })
     .state('app.login', {
         url: '/login',
         views: {
@@ -236,7 +244,41 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
             controller: "ProfileCtrl"
         }
     }
-   });
+   })
+  .state('app.notifications', {
+    url: "/notifications",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/notifications.html",
+            
+        }
+    }
+   })
+  .state('app.aboutus', {
+    url: "/aboutus",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/aboutus.html",
+        }
+    }
+   })
+  .state('app.accountinfo', {
+    url: "/accountinfo",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/accountinfo.html",
+        }
+    }
+   })
+  .state('app.notificationpreferences', {
+    url: "/notificationpreferences",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/notificationpreferences.html",
+        }
+    }
+   })
+  ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/map');
 });
