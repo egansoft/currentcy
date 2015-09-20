@@ -231,6 +231,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     })
 
+  .state('app.editprofile', {
+        url: '/editprofile',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/accountinfo.html',
+                controller: 'EditProfileCtrl'
+            }
+        }
+    })
+
       .state('app.settings', {
         url: '/settings',
         views: {
@@ -296,14 +306,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     }
    })
-  .state('app.editprofile', {
-    url: "/editprofile",
-    views: {
-        'menuContent': {
-            templateUrl: "templates/editprofile.html",
-        }
-    }
-   })
+  
   .state('app.notificationpreferences', {
     url: "/notificationpreferences",
     views: {

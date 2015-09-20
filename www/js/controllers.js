@@ -144,6 +144,11 @@ error: function(error) {
   }
 })
 
+.controller('EditProfileCtrl', function ($scope, ngFB) {
+  $scope.me = window.me
+
+})
+
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
 
