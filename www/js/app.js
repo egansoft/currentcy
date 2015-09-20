@@ -312,6 +312,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     }
    })
+  .state('app.postlogin', {
+    url: "/postlogin",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/postlogin.html",
+        }
+    }
+   })
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/map');
