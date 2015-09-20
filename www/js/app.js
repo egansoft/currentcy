@@ -219,6 +219,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
         }
     }
    })
+  .state('app.notificationpreferences', {
+    url: "/notificationpreferences",
+    views: {
+        'menuContent': {
+            templateUrl: "templates/notificationpreferences.html",
+        }
+    }
+   })
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/map');
