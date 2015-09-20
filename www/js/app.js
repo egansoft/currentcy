@@ -294,7 +294,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
     views: {
         'menuContent': {
             templateUrl: "templates/notifications.html",
-
+            controller: "notificationsCtrl"
         }
     }
    })

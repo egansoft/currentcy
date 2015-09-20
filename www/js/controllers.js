@@ -132,11 +132,16 @@ error: function(error) {
 .controller('LoginCtrl', function($scope) {
 })
 
+.controller('notificationsCtrl', function($scope) {
+  $scope.notif=window.notif
+
+})
+
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
 .controller('MenuCtrl', function($scope) {
-  $scope.notif = window.notif
+  $scope.notifnum = window.notifnum
 })
 
 
