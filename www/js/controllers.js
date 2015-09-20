@@ -157,8 +157,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     where = latLng
 
+    defaultLatLng = {lat: 42.358741, lng: -71.095807};
+
     var mapOptions = {
-      center: latLng,
+      center: defaultLatLng,
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -171,8 +173,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
       var marker = new google.maps.Marker({
         map: $scope.map,
-        position: latLng,
-        center: latLng,
+        position: defaultLatLng,
+        center: defaultLatLng,
         zoom: 1
       });
 
@@ -212,7 +214,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }, function(error){
       console.log("Could not get location");
     });
-  }, 3000);
+}, 5000);
 
 
   function place_marker(chargeLat, chargeLng) {
