@@ -147,7 +147,6 @@ error: function(error) {
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
 
-  place_marker(42.358741, -71.095807);
   var marker;
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -167,11 +166,13 @@ error: function(error) {
     //Wait until the map is loaded
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
+      var image = '../img/15-person-icon.png';
       marker = new google.maps.Marker({
         map: $scope.map,
         position: defaultLatLng,
         center: defaultLatLng,
-        zoom: 1
+        zoom: 1,
+        icon: image
       });
 
       var infoWindow = new google.maps.InfoWindow({
@@ -183,6 +184,12 @@ error: function(error) {
       });
 
     });
+
+  place_marker(42.356241, -71.098707);
+  place_marker(42.357241, -71.094707);
+  place_marker(42.357341, -71.094907);
+  place_marker(42.360341, -71.104907);
+  place_marker(42.359341, -71.0884907);
   }, function(error){
     console.log("Could not get location");
   });
@@ -210,11 +217,12 @@ error: function(error) {
   function place_marker(chargeLat, chargeLng) {
     var positionVal = {lat: chargeLat, lng: chargeLng};
 
-    var marker = new google.maps.Marker({
-      map: $scope.map,
-      animation: google.maps.Animation.DROP,
-      position: positionVal,
-    });
+    personMarker = new google.maps.Marker({
+        map: $scope.map,
+        position: positionVal,
+        center: positionVal,
+        zoom: 1
+      });
   }
 
 })
