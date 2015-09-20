@@ -221,15 +221,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
             }
         }
     })
-    .state('app.deliverymap', {
-        url: '/deliverymap',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/deliverymap.html',
-                controller: 'MapCtrl'
-            }
-        }
-    })
     .state('app.login', {
         url: '/login',
         views: {
@@ -258,6 +249,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngOpenFB', 'ngCordov
             }
         }
     })
+
+
+   .state('app.deliverymap', {
+        url: '/deliverymap',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/deliverymap.html',
+                controller: 'deliverymapCtrl'
+            }
+        }
+    })
+
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {
