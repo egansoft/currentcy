@@ -192,6 +192,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   });
 
   setInterval(function () {
+      clearMarkers();
 
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
       var livelatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
