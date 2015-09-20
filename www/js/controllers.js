@@ -113,17 +113,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
             } else {
                 alert('Facebook login failed');
             }
-        },
-        error: function(error) {
-          alert('Facebook error: ' + error.error_description);
         }
-      });
-      $state.go("app.home",{},{reload:true});
-    } else {
-      alert('Facebook login failed');
-    }
-  },
-  {scope: 'email,publish_actions,user_friends'})
+    )
 }
 })
 
@@ -160,7 +151,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
 
-  place_marker(39.256116, -76.710749);
+  place_marker(42.358741, -71.095807);
 
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
